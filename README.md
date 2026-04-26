@@ -16,6 +16,7 @@ The current implementation includes:
 - Comment threads for issue discussions
 - Collaborative projects with contributors and progress tracking
 - User and admin dashboards for product visibility with clean chart-based analytics
+- Route-level lazy loading, vendor chunking, and deferred dashboard chart loading for better initial performance
 
 ## Architecture
 
@@ -31,6 +32,7 @@ Frontend -> Backend API -> MongoDB -> AI Layer -> Map Layer
 - Community: comments and threaded replies
 - Projects: collaboration layer for turning issues into action
 - Dashboard: user impact metrics and admin-wide analytics with role and status visualizations
+- Performance: split bundles for routes and vendors, with dashboard charts loaded only when needed
 
 ## Tech Stack
 
@@ -247,7 +249,11 @@ GEMINI_API_KEY=your_api_key_here
 
 ## Status
 
-AquaVeda currently includes the complete core system with hardening and dashboard visibility: auth, moderated wiki, geo issues, map visualization, AI suggestions, community discussions, projects, and user/admin dashboards with clean chart analytics.
+AquaVeda currently includes the complete core system with hardening, map-first explore UX, and dashboard visibility: auth, moderated wiki, geo issues, map visualization, AI suggestions, community discussions, projects, and user/admin dashboards with clean chart analytics. The client bundle has been optimized with route lazy loading, vendor chunking, and deferred dashboard chart rendering.
+
+## Next Path
+
+The next recommended work is release-readiness polish: idle-time prefetch for dashboard charts, API/UI tests for critical flows, deployment checklist completion, and environment/runbook cleanup. After that, the product can decide whether to add engagement mechanics such as XP, contribution score, and badges.
 
 ## Author
 

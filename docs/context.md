@@ -89,6 +89,18 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 - Frontend bundle profile improved by lazy-loading primary routes and splitting vendor libraries (React, map, charts, motion) into dedicated chunks for faster initial payload delivery
 - Dashboard analytics rendering optimized by deferring chart component module loading until the analytics section enters viewport
 
+## Current State Summary
+
+- Core product loop is implemented: auth, wiki, issues, map visualization, AI recommendations, community discussion, projects, and dashboards.
+- Explore is the main product workspace and is now the preferred map-first entry path.
+- Frontend performance work has removed the oversized initial bundle warning and shifted heavy analytics code off the first paint.
+
+## Suggested Next Path
+
+- Add idle-time prefetch for dashboard chart chunks after the first dashboard paint.
+- Finish tests, deployment checklist, and runbook/environment documentation.
+- Decide whether to add engagement mechanics next, or hold the line on polish and release readiness.
+
 ---
 
 ## Architecture
