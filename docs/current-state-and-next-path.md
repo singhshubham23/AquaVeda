@@ -20,6 +20,74 @@ The backend already includes auth, RBAC, validation, rate limiting, CORS allowli
 3. Decide whether the product should move next into engagement mechanics such as XP, contribution score, and badges.
 4. If product scope expands, add the next missing UX shell piece: contextual sidebars by section.
 
+server/src/modules/auth/auth.routes.js
+6. Better Modern Design
+router.post("/register", authLimiter, validate(registerSchema), register);
+router.post("/login", authLimiter, validate(loginSchema), login);
+router.post("/logout", protect, logout);
+router.post("/refresh", refreshToken);
+router.get("/me", protect, getMe);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
+
+Real systems need lifecycle, not just entrance doors.
+Renew
+
+Expand auth capabilities:
+
+password reset
+refresh tokens
+logout
+email verification
+auth limiter
+
+server/src/modules/auth/auth.controller.js
+Fix:
+const safeUser = {
+  id: user._id,
+  name: user.name,
+  email: user.email,
+  role: user.role
+};
+No checks for:
+
+valid email
+password length
+empty strings
+malicious payloads
+
+Need schema validation (Zod/Joi/express-validator).
+
+Better Modern Version
+const sanitizeUser = (u) => ({
+  id: u._id,
+  name: u.name,
+  email: u.email,
+  role: u.role,
+});
+
+const generateToken = (u) =>
+  jwt.sign(
+    { id: u._id, role: u.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "15m" }
+  );
+
+Use refresh token separately.
+
+Remove
+
+Returning raw Mongoose document.
+
+Renew
+DTO response objects
+validation layer
+token helper
+refresh token flow
+email normalization
+
+
+
 ## Notes
 
 - The roadmap intentionally keeps AI hybrid expansion deferred until explicitly needed.
