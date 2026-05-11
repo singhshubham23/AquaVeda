@@ -1,0 +1,35 @@
+{
+  "format": "Automated Changelog Log",
+  "description": "Machine-readable changelog tracking all updates. Append entries with category, timestamp, description, files affected.",
+  "categories": ["Frontend", "Backend", "Docs", "Config", "CI/CD", "Ops", "Planning", "Refactor", "Bugfix", "Feature", "Performance"],
+  "entries": [
+    {
+      "date": "2026-04-26",
+      "category": "Docs",
+      "title": "Refreshed documentation suite",
+      "description": "Updated README, context, todo with current-state summary and next path for release readiness",
+      "files": ["docs/logs.md", "docs/context.md", "docs/todo.md", "docs/current-state-and-next-path.md", "README.md"],
+      "priority": "medium",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-10",
+      "category": "Frontend Perf",
+      "title": "Bundle optimization and lazy loading",
+      "description": "Added route-level lazy loading, Vite vendor chunking, and deferred dashboard chart loading",
+      "files": ["client/src/main.jsx", "client/vite.config.js", "client/src/pages/Dashboard.jsx"],
+      "priority": "high",
+      "status": "completed"
+    },
+    {
+      "date": "2026-04-10",
+      "category": "Motion",
+      "title": "Framer Motion integration and cleanup",
+      "description": "Integrated Framer Motion transitions, removed duplicate animations, applied purposeful motion patterns",
+      "files": ["client/src/components/IssuePanel.jsx", "client/src/styles/app.css"],
+      "priority": "medium",
+      "status": "completed"
+    }
+  ],
+  "lastUpdated": "2026-05-11T00:00:00Z"
+}

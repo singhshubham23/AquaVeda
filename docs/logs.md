@@ -1,5 +1,22 @@
 # Logs
 
+## ℹ️ Automated Changelog System
+
+All changelog entries are now tracked in **`.logs`** (machine-readable JSON format) and synced to this file.
+
+### 📝 Adding Entries
+
+**Interactive method:**
+```bash
+node scripts/add-changelog.js
+```
+
+**Manual method:**
+- Edit `.logs` file directly (JSON format)
+- Entry is automatically synced to this markdown file
+
+---
+
 ## Format
 
 [DATE] - [FEATURE] - [DESCRIPTION]
