@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema(
   {
+    tenantId: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true
+    },
     title: {
       type: String,
       required: true,
@@ -42,6 +48,9 @@ const projectSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+projectSchema.index({ tenantId: 1, createdAt: -1 });
+projectSchema.index({ tenantId: 1, status: 1 });
 
 const Project = mongoose.model("Project", projectSchema);
 

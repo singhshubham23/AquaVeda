@@ -13,7 +13,7 @@ export default function IssueAISection({ issue }) {
     try {
       setLoading(true);
       setError("");
-      const response = await getIssueRecommendations(issue.id);
+      const response = await getIssueRecommendations(issue._id || issue.id);
       setData(response.data || []);
       setHasLoaded(true);
       setOpen(true);
@@ -29,41 +29,34 @@ export default function IssueAISection({ issue }) {
       setOpen(false);
       return;
     }
-
     if (!hasLoaded) {
       await fetchAI();
       return;
     }
-
     setOpen(true);
   };
 
   return (
-    <section className="issue-section">
-      <div className="section-row">
-        <h3 className="section-title">AI Suggestions</h3>
-        <button type="button" className="ghost-btn" onClick={handleToggle} disabled={loading}>
-          {loading ? "Fetching suggestions..." : open ? "Hide" : "Show"}
-        </button>
-      </div>
+    <div className="bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-100 rounded-2xl overflow-hidden">
+      <button
+        type="button"
+        onClick={handleToggle}
+        disabled={loading}
+        className="w-full flex items-center justify-between px-5 py-4 hover:bg-violet-50/80 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-lg">AI</span>
+          <span className="text-sm font-extrabold text-violet-800">AI Suggestions</span>
+        </div>
+        <span className="text-sm font-bold text-violet-500">
+          {loading ? "Loading..." : open ? "Hide" : "Show"}
+        </span>
+      </button>
 
-      {error ? <p className="error-text">{error}</p> : null}
+      {error && <p className="px-5 pb-4 text-sm text-red-600 font-medium">{error}</p>}
 
-      <AnimatePresence initial={false} mode="wait">
-        {!open && !loading ? (
-          <motion.p
-            key="ai-collapsed"
-            className="panel-empty"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-          >
-            Expand to view AI-backed guidance for this issue.
-          </motion.p>
-        ) : null}
-
-        {open ? (
+      <AnimatePresence initial={false}>
+        {open && (
           <motion.div
             key="ai-expanded"
             initial={{ height: 0, opacity: 0 }}
@@ -72,25 +65,29 @@ export default function IssueAISection({ issue }) {
             transition={{ duration: 0.24, ease: "easeInOut" }}
             style={{ overflow: "hidden" }}
           >
-            {data.length > 0 ? (
-              <ul className="issue-list">
-                {data.map((item) => (
-                  <motion.li
-                    key={item}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.18, ease: "easeInOut" }}
-                  >
-                    {item}
-                  </motion.li>
-                ))}
-              </ul>
-            ) : null}
-
-            {!loading && data.length === 0 ? <p className="panel-empty">No suggestions available yet.</p> : null}
+            <div className="px-5 pb-5 pt-0 border-t border-violet-100">
+              {data.length > 0 ? (
+                <ul className="space-y-3 mt-4">
+                  {data.map((item, i) => (
+                    <motion.li
+                      key={i}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.15, delay: i * 0.05 }}
+                      className="flex items-start gap-3 text-sm text-violet-800 leading-6"
+                    >
+                      <span className="text-violet-400 mt-0.5 shrink-0">-&gt;</span>
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-slate-400 mt-4">No suggestions available yet.</p>
+              )}
+            </div>
           </motion.div>
-        ) : null}
+        )}
       </AnimatePresence>
-    </section>
+    </div>
   );
 }

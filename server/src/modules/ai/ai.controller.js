@@ -1,15 +1,47 @@
 import { error, success } from "../../utils/response.js";
-import { getRecommendations } from "./ai.service.js";
+import * as aiService from "./ai.service.js";
 
-export const recommend = async (req, res) => {
+export const recommend = async (req, res, next) => {
   try {
-    const recommendations = await getRecommendations(req.params.id);
+    const recommendations = await aiService.getRecommendations(req.params.id, req.tenantId);
     return success(res, recommendations, "Recommendations fetched");
   } catch (err) {
-    if (err.message === "Issue not found") {
-      return error(res, err.message, 404);
-    }
+    next(err);
+  }
+};
 
-    return error(res, err.message, 400);
+export const classify = async (req, res, next) => {
+  try {
+    const { title, description } = req.body;
+    
+    if (!title || !description) {
+      return error(res, "Title and description are required", 400);
+    }
+    
+    const classification = await aiService.classifyIssue(title, description);
+    return success(res, classification, "Issue classified");
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const checkDuplicates = async (req, res, next) => {
+  try {
+    const { title, lng, lat } = req.body;
+    
+    if (!title || lng === undefined || lat === undefined) {
+      return error(res, "Title, lng, and lat are required", 400);
+    }
+    
+    const duplicates = await aiService.detectDuplicates(
+      title, 
+      Number.parseFloat(lng), 
+      Number.parseFloat(lat),
+      req.tenantId
+    );
+    
+    return success(res, duplicates, "Duplicate check complete");
+  } catch (err) {
+    next(err);
   }
 };

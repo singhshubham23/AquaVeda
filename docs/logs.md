@@ -62,3 +62,8 @@ node scripts/add-changelog.js
 [2026-04-10] - Frontend Perf - Added route-level lazy loading and Vite manual vendor chunking to remove oversized initial bundle warning and improve load distribution
 [2026-04-10] - Frontend Perf - Deferred dashboard chart component loading until analytics section enters viewport, reducing immediate dashboard JS cost
 [2026-04-26] - Docs - Refreshed README, context, todo, and added current-state summary with recommended next path for release readiness
+[2026-05-28] - Dashboard - Added idle-time prefetch for chart modules after the first admin dashboard paint
+[2026-05-28] - Client - Fixed duplicate React hook import in IssueMap that blocked production builds
+[2026-05-28] - Docs - Added deployment checklist and runbook guidance for release readiness
+[2026-05-28] - Community - Reworked Community page into a feed-first Quora-style workspace with questions, contributions, and issue threads
+[2026-05-28] - Access - Default new sign-ups to MEMBER, keep legacy VIEWER accounts member-capable, and tighten member/admin content visibility

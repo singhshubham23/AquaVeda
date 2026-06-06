@@ -10,15 +10,15 @@ The frontend has also been refined for perceived quality and performance:
 - Framer Motion is used only for meaningful state changes in Explore.
 - The client bundle is split with route-level lazy loading and vendor chunks.
 - Dashboard charts are deferred until the analytics section is actually reached.
+- Dashboard chart chunks now also prefetch during idle time after the first admin dashboard paint.
 
 The backend already includes auth, RBAC, validation, rate limiting, CORS allowlisting, geo queries, comments, projects, recommendation endpoints, and dashboard aggregates.
 
 ## Suggested Next Path
 
-1. Add idle-time prefetch for dashboard chart chunks after the first dashboard paint.
-2. Finish the remaining Sprint 5 items: API/UI tests, deployment checklist, and environment/runbook docs.
-3. Decide whether the product should move next into engagement mechanics such as XP, contribution score, and badges.
-4. If product scope expands, add the next missing UX shell piece: contextual sidebars by section.
+1. Finish the remaining Sprint 5 item: API/UI tests for critical flows.
+2. Decide whether the product should move next into engagement mechanics such as XP, contribution score, and badges.
+3. If product scope expands, add the next missing UX shell piece: contextual sidebars by section.
 
 server/src/modules/auth/auth.routes.js
 6. Better Modern Design

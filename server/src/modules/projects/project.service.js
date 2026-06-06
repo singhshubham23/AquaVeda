@@ -1,17 +1,25 @@
 import Project from "./project.model.js";
 import { buildPaginationMeta, getPagination } from "../../utils/pagination.js";
+import Issue from "../issues/issue.model.js";
+import { ForbiddenError, NotFoundError } from "../../utils/AppError.js";
 
-export const createProject = async (data, userId) => {
+export const createProject = async (data, userId, tenantId) => {
+  const relatedIssue = await Issue.findOne({ _id: data.relatedIssue, tenantId }).select("_id");
+  if (!relatedIssue) {
+    throw new NotFoundError("Related issue");
+  }
+
   return Project.create({
+    tenantId,
     ...data,
     createdBy: userId,
     contributors: [userId]
   });
 };
 
-export const joinProject = async (projectId, userId) => {
-  return Project.findByIdAndUpdate(
-    projectId,
+export const joinProject = async (projectId, userId, tenantId) => {
+  return Project.findOneAndUpdate(
+    { _id: projectId, tenantId },
     { $addToSet: { contributors: userId } },
     { returnDocument: "after" }
   )
@@ -20,17 +28,17 @@ export const joinProject = async (projectId, userId) => {
     .populate("relatedIssue", "title severity status");
 };
 
-export const getProjects = async (query = {}) => {
+export const getProjects = async (tenantId, query = {}) => {
   const { page, limit, skip } = getPagination(query);
   const [items, total] = await Promise.all([
-    Project.find()
+    Project.find({ tenantId })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .populate("createdBy", "name")
       .populate("contributors", "name")
       .populate("relatedIssue", "title severity status"),
-    Project.countDocuments()
+    Project.countDocuments({ tenantId })
   ]);
 
   return {
@@ -39,15 +47,15 @@ export const getProjects = async (query = {}) => {
   };
 };
 
-export const updateProgress = async (projectId, progress, userId) => {
-  const project = await Project.findById(projectId);
+export const updateProgress = async (projectId, progress, userId, tenantId) => {
+  const project = await Project.findOne({ _id: projectId, tenantId });
 
   if (!project) {
-    throw new Error("Project not found");
+    throw new NotFoundError("Project");
   }
 
   if (project.createdBy.toString() !== userId) {
-    throw new Error("Not authorized");
+    throw new ForbiddenError("Not authorized");
   }
 
   project.progress = progress;
@@ -57,7 +65,7 @@ export const updateProgress = async (projectId, progress, userId) => {
 
   await project.save();
 
-  return Project.findById(project._id)
+  return Project.findOne({ _id: project._id, tenantId })
     .populate("createdBy", "name")
     .populate("contributors", "name")
     .populate("relatedIssue", "title severity status");

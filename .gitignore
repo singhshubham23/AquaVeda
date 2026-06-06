@@ -29,6 +29,8 @@ pnpm-debug.log*
 tmp/
 temp/
 *.tmp
+tmp_*.js
+*_debug.js
 .cache/
 
 # OS and editor files

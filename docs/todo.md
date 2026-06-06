@@ -155,7 +155,7 @@ Goal: complete impact loops and harden for release.
 - [ ] Project model + join/leave + progress updates
 - [ ] XP/badges basics tied to contributions
 - [ ] API and UI tests for critical paths
-- [ ] Deployment checklist and environment docs
+- [x] Deployment checklist and environment docs
 
 Exit criteria:
 
@@ -229,7 +229,7 @@ Problem -> Insight -> Collaboration -> Action -> Impact -> Trust
 	- Act: project navigation
 	- Dashboard: stat links
 - [ ] Add top-nav utility actions: search, notifications, profile menu
-- [ ] Dashboard idle-time prefetch for chart chunks after first dashboard paint
+- [x] Dashboard idle-time prefetch for chart chunks after first dashboard paint
 
 ### Explore (Map-First UX) — Step 1
 

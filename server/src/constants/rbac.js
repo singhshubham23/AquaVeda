@@ -1,0 +1,97 @@
+export const ROLES = {
+  ADMIN: "ADMIN",
+  MEMBER: "MEMBER",
+  VIEWER: "VIEWER",
+};
+
+export const LEGACY_ROLE_ALIASES = {
+  USER: ROLES.MEMBER,
+  EXPERT: ROLES.MEMBER,
+  VIEWER: ROLES.MEMBER,
+};
+
+export const PERMISSIONS = {
+  USER_DASHBOARD_READ: "dashboard:user:read",
+  LEADERBOARD_READ: "dashboard:leaderboard:read",
+  ADMIN_DASHBOARD_READ: "dashboard:admin:read",
+  MODERATION_QUEUE_READ: "dashboard:moderation:read",
+  COMMUNITY_READ: "community:read",
+  COMMUNITY_CONTRIBUTE: "community:contribute",
+  MODERATION_REVIEW: "moderation:review",
+  WIKI_CREATE: "wiki:create",
+  WIKI_UPDATE_OWN: "wiki:update:own",
+  WIKI_MODERATE: "wiki:moderate",
+  ISSUE_CREATE: "issue:create",
+  ISSUE_VERIFY: "issue:verify",
+  ISSUE_DELETE_OWN: "issue:delete:own",
+  ISSUE_DELETE_ANY: "issue:delete:any",
+  PROJECT_CREATE: "project:create",
+  PROJECT_JOIN: "project:join",
+  PROJECT_UPDATE_PROGRESS_OWN: "project:update:own-progress",
+  COMMENT_CREATE: "comment:create",
+  COMMENT_UPDATE_OWN: "comment:update:own",
+  COMMENT_DELETE_OWN: "comment:delete:own",
+  COMMENT_DELETE_ANY: "comment:delete:any",
+  COMMENT_FLAG: "comment:flag",
+  REPORT_CREATE: "report:create",
+  REPORT_REVIEW: "report:review",
+  AI_CLASSIFY: "ai:classify",
+  AI_DUPLICATES: "ai:duplicates",
+};
+
+const MEMBER_PERMISSIONS = [
+  PERMISSIONS.USER_DASHBOARD_READ,
+  PERMISSIONS.LEADERBOARD_READ,
+  PERMISSIONS.COMMUNITY_READ,
+  PERMISSIONS.COMMUNITY_CONTRIBUTE,
+  PERMISSIONS.WIKI_CREATE,
+  PERMISSIONS.WIKI_UPDATE_OWN,
+  PERMISSIONS.ISSUE_CREATE,
+  PERMISSIONS.ISSUE_VERIFY,
+  PERMISSIONS.ISSUE_DELETE_OWN,
+  PERMISSIONS.PROJECT_CREATE,
+  PERMISSIONS.PROJECT_JOIN,
+  PERMISSIONS.PROJECT_UPDATE_PROGRESS_OWN,
+  PERMISSIONS.COMMENT_CREATE,
+  PERMISSIONS.COMMENT_UPDATE_OWN,
+  PERMISSIONS.COMMENT_DELETE_OWN,
+  PERMISSIONS.COMMENT_FLAG,
+  PERMISSIONS.REPORT_CREATE,
+  PERMISSIONS.AI_CLASSIFY,
+  PERMISSIONS.AI_DUPLICATES,
+];
+
+export const ROLE_PERMISSIONS = {
+  [ROLES.ADMIN]: Object.values(PERMISSIONS),
+  [ROLES.MEMBER]: MEMBER_PERMISSIONS,
+  [ROLES.VIEWER]: MEMBER_PERMISSIONS,
+};
+
+export const normalizeRole = (role) => {
+  const upperRole = String(role || ROLES.MEMBER).trim().toUpperCase();
+  if (LEGACY_ROLE_ALIASES[upperRole]) return LEGACY_ROLE_ALIASES[upperRole];
+  if (Object.values(ROLES).includes(upperRole)) return upperRole;
+  return ROLES.MEMBER;
+};
+
+export const getPermissionsForRole = (role) => {
+  const normalizedRole = normalizeRole(role);
+  return ROLE_PERMISSIONS[normalizedRole] || ROLE_PERMISSIONS[ROLES.MEMBER];
+};
+
+export const hasPermission = (roleOrUser, permission) => {
+  const role =
+    typeof roleOrUser === "string" ? roleOrUser : roleOrUser?.role || ROLES.MEMBER;
+  const permissions = Array.isArray(roleOrUser?.permissions)
+    ? roleOrUser.permissions
+    : getPermissionsForRole(role);
+
+  return permissions.includes(permission);
+};
+
+export const isAdminRole = (roleOrUser) => {
+  const role = typeof roleOrUser === "string" ? roleOrUser : roleOrUser?.role;
+  return normalizeRole(role) === ROLES.ADMIN;
+};
+
+export const STAFF_ROLES = [ROLES.ADMIN, ROLES.MEMBER];

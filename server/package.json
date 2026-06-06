@@ -6,17 +6,24 @@
   "scripts": {
     "dev": "node src/server.js",
     "start": "node src/server.js",
-    "seed:users": "node src/seed/seedUsers.js"
+    "test:api": "node --test src/tests/api.critical.test.js",
+    "seed:users": "node src/seed/seedUsers.js",
+    "seed:tenant": "node src/seed/backfillTenant.js"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
     "express": "^5.2.1",
     "express-rate-limit": "^8.3.2",
+    "helmet": "^8.2.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.2",
     "morgan": "^1.10.1",
+    "multer": "^2.1.1",
+    "sharp": "^0.34.5",
+    "winston": "^3.19.0",
     "zod": "^4.3.6"
   }
 }

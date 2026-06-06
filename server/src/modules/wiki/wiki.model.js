@@ -2,6 +2,19 @@ import mongoose from "mongoose";
 
 const wikiSchema = new mongoose.Schema(
   {
+    tenantId: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true
+    },
+    type: {
+      type: String,
+      enum: ["ARTICLE", "QUESTION"],
+      default: "ARTICLE"
+    },
+    upvotedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    downvotedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     title: {
       type: String,
       required: true,
@@ -34,6 +47,8 @@ const wikiSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+wikiSchema.index({ tenantId: 1, status: 1, createdAt: -1 });
 
 const Wiki = mongoose.model("Wiki", wikiSchema);
 

@@ -37,7 +37,7 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 
 ### Community
 
-- Comments and discussions
+- Feed-first community posts, questions, and discussions
 - Linked to issues and articles
 
 ### AI Engine
@@ -52,8 +52,8 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 
 ### Dashboard
 
-- User activity
-- Issue analytics
+- Member/user activity snapshot
+- Admin-only analytics and moderation controls
 - Regional insights
 
 ## Implementation Status
@@ -65,7 +65,8 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 - Server runtime validated with local MongoDB URI and successful connection
 - Auth foundation started: user model added, register and login endpoints live under /api/v1/auth
 - Access control hardened with JWT verification, role guards, and protected me endpoint
-- Seed system added for baseline ADMIN and EXPERT users
+- Default registration now creates MEMBER accounts, with legacy VIEWER accounts treated as members
+- Seed system added for baseline ADMIN and MEMBER users
 - Shared API response contract introduced with centralized error and not-found shapes
 - Wiki module started with article model, protected creation, expert approval, and approved-only public listing
 - Wiki moderation lifecycle completed with author-only draft edits, expert or admin reject flow, and per-user article listing
@@ -73,6 +74,7 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 - Geo visualization layer added with issue filtering API and Leaflet map rendering for marker-based issue exploration
 - AI layer added with rule-based recommendations per issue context and map popup suggestion retrieval
 - Community layer added with comments and one-level threaded replies for issue discussions
+- Community layer now includes a feed-first workspace with Quora-style questions, contribution posts, and issue threads while keeping the issue desk available as a separate tab
 - Projects layer added to convert issues into collaborative projects with contributors and basic progress tracking
 - API hardening layer added with centralized Zod validation, pagination standards, env-driven CORS allowlist, and route-rate limiting
 - Dashboard layer added with protected user metrics and admin analytics endpoints plus frontend stats cards view
@@ -88,17 +90,21 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 - Motion layer tightened to avoid over-animation by removing redundant CSS keyframe effects and keeping animations scoped to meaningful state changes
 - Frontend bundle profile improved by lazy-loading primary routes and splitting vendor libraries (React, map, charts, motion) into dedicated chunks for faster initial payload delivery
 - Dashboard analytics rendering optimized by deferring chart component module loading until the analytics section enters viewport
+- Dashboard analytics now also prefetches chart modules during idle time after the first admin dashboard paint for faster expansion
+- Release-readiness docs added for deployment and runbook guidance
 
 ## Current State Summary
 
 - Core product loop is implemented: auth, wiki, issues, map visualization, AI recommendations, community discussion, projects, and dashboards.
+- Community now presents a friendlier member-facing feed for questions, contributions, and issue conversations instead of only workflow controls.
+- New sign-ups now default to MEMBER, legacy VIEWER accounts can contribute, and ADMIN keeps the full control surface.
 - Explore is the main product workspace and is now the preferred map-first entry path.
 - Frontend performance work has removed the oversized initial bundle warning and shifted heavy analytics code off the first paint.
 
 ## Suggested Next Path
 
-- Add idle-time prefetch for dashboard chart chunks after the first dashboard paint.
-- Finish tests, deployment checklist, and runbook/environment documentation.
+- API/UI tests for critical flows still need to be added.
+- Deployment checklist and runbook/environment documentation are now available and should be kept current.
 - Decide whether to add engagement mechanics next, or hold the line on polish and release readiness.
 
 ---

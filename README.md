@@ -1,6 +1,6 @@
 # AquaVeda
 
-⚠️⚠️ Due to some conflict between smtp and resend, the authorization isn't working for now as it requires an otp. I am trying to look for a workaround that doesn't requires me investing, I am broke..
+Note: password-reset delivery uses a mocked email helper in local development until a real SMTP or Resend provider is configured.
 
 AquaVeda is a geo-intelligent, AI-assisted, community-driven platform for water conservation. It combines moderated knowledge sharing, map-based issue reporting, collaborative projects, and rule-based recommendations into one product system.
 
@@ -67,8 +67,9 @@ AquaVeda/
 
 - Register and login endpoints
 - JWT-protected routes
-- USER, EXPERT, and ADMIN roles
-- Seeded admin and expert accounts for testing
+- MEMBER is the default signed-up role
+- MEMBER is contributor-capable, legacy VIEWER accounts are treated as members, and ADMIN unlocks admin controls
+- Seeded admin and member accounts for testing
 
 ### Knowledge System
 
@@ -98,6 +99,7 @@ AquaVeda/
 
 ### Community Layer
 
+- Feed-first community space with questions, contributions, and issue threads
 - Issue comments
 - Single-level threaded replies
 - Validation for discussion queries and writes
@@ -115,6 +117,10 @@ AquaVeda/
 
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `POST /api/v1/auth/logout`
+- `POST /api/v1/auth/forgot-password`
+- `POST /api/v1/auth/reset-password`
 - `GET /api/v1/auth/me`
 
 ### Wiki
@@ -133,6 +139,7 @@ AquaVeda/
 - `GET /api/v1/issues/filter`
 - `GET /api/v1/issues/map`
 - `GET /api/v1/issues/nearby`
+- `GET /api/v1/issues/radius`
 
 ### Comments
 
@@ -152,6 +159,8 @@ AquaVeda/
 
 ### Dashboard
 
+- Member/user dashboard for personal activity
+- Admin-only analytics and moderation controls
 - `GET /api/v1/dashboard/user`
 - `GET /api/v1/dashboard/admin`
 
@@ -255,7 +264,7 @@ AquaVeda currently includes the complete core system with hardening, map-first e
 
 ## Next Path
 
-The next recommended work is release-readiness polish: idle-time prefetch for dashboard charts, API/UI tests for critical flows, deployment checklist completion, and environment/runbook cleanup. After that, the product can decide whether to add engagement mechanics such as XP, contribution score, and badges.
+The next recommended work is release-readiness polish: API/UI tests for critical flows, deployment checklist validation, and environment/runbook cleanup. After that, the product can decide whether to add engagement mechanics such as XP, contribution score, and badges.
 
 ## Author
 

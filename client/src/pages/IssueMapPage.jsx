@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import IssueMap from "../components/IssueMap.jsx";
+import MapInsightsBar from "../components/map/MapInsightsBar.jsx";
 import { getIssueMapData, getIssueRecommendations } from "../services/api.js";
 
 const severityOptions = ["", "LOW", "MEDIUM", "HIGH", "CRITICAL"];
@@ -66,9 +67,11 @@ export default function IssueMapPage() {
   return (
     <main className="map-page">
       <header className="map-header">
-        <h1>Water Issues Map</h1>
-        <p>View and filter reported water issues in map format.</p>
+        <h1>Water Response Map</h1>
+        <p>Track report clusters, response zones, and priority work areas instead of viewing a plain map.</p>
       </header>
+
+      <MapInsightsBar issues={issues} />
 
       <section className="map-filters">
         <label>

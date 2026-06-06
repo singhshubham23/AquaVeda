@@ -1,15 +1,23 @@
 import { Router } from "express";
-import { verifyJWT } from "../../middlewares/auth.middleware.js";
-import { allowRoles } from "../../middlewares/role.middleware.js";
-import { approve, create, getAll, getMine, reject, update } from "./wiki.controller.js";
+import { verifyJWT, authorize } from "../../middlewares/auth.middleware.js";
+import { PERMISSIONS } from "../../constants/rbac.js";
+import { validate } from "../../middlewares/validate.middleware.js";
+import { approve, create, getAll, getMine, reject, update, vote } from "./wiki.controller.js";
+import {
+  createWikiSchema,
+  updateWikiSchema,
+  voteWikiSchema,
+  wikiIdParamSchema,
+} from "./wiki.validation.js";
 
 const router = Router();
 
-router.post("/", verifyJWT, create);
+router.post("/", verifyJWT, authorize(PERMISSIONS.WIKI_CREATE), validate(createWikiSchema), create);
 router.get("/", getAll);
 router.get("/mine", verifyJWT, getMine);
-router.patch("/:id", verifyJWT, update);
-router.post("/:id/approve", verifyJWT, allowRoles("EXPERT", "ADMIN"), approve);
-router.post("/:id/reject", verifyJWT, allowRoles("EXPERT", "ADMIN"), reject);
+router.patch("/:id", verifyJWT, authorize(PERMISSIONS.WIKI_UPDATE_OWN), validate(updateWikiSchema), update);
+router.post("/:id/approve", verifyJWT, authorize(PERMISSIONS.WIKI_MODERATE), validate(wikiIdParamSchema), approve);
+router.post("/:id/reject", verifyJWT, authorize(PERMISSIONS.WIKI_MODERATE), validate(wikiIdParamSchema), reject);
+router.post("/:id/vote", verifyJWT, validate(voteWikiSchema), vote);
 
 export default router;
