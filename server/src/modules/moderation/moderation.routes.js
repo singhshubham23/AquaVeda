@@ -26,7 +26,7 @@ router.get(
 router.patch(
   "/:id/review",
   verifyJWT,
-  authorize(PERMISSIONS.REPORT_REVIEW),
+  authorize(PERMISSIONS.REPORT_REVIEW, PERMISSIONS.MODERATION_REVIEW),
   validate(reviewReportSchema),
   reviewReport
 );

@@ -45,13 +45,13 @@ router.post(
   validate(createIssueSchema),
   create
 );
-router.get("/", validate(listIssueQuerySchema), getAll);
-router.get("/filter", validate(filterIssueQuerySchema), getFiltered);
-router.get("/map", validate(filterIssueQuerySchema), getMapData);
-router.get("/nearby", validate(nearbyIssueQuerySchema), getNearby);
-router.get("/radius", validate(radiusIssueQuerySchema), getRadiusData);
-router.get("/:id", validate(issueIdParamSchema), getById);
+router.get("/", authorize(PERMISSIONS.ISSUE_READ), validate(listIssueQuerySchema), getAll);
+router.get("/filter", authorize(PERMISSIONS.ISSUE_READ), validate(filterIssueQuerySchema), getFiltered);
+router.get("/map", authorize(PERMISSIONS.ISSUE_READ), validate(filterIssueQuerySchema), getMapData);
+router.get("/nearby", authorize(PERMISSIONS.ISSUE_READ), validate(nearbyIssueQuerySchema), getNearby);
+router.get("/radius", authorize(PERMISSIONS.ISSUE_READ), validate(radiusIssueQuerySchema), getRadiusData);
+router.get("/:id", authorize(PERMISSIONS.ISSUE_READ), validate(issueIdParamSchema), getById);
 router.patch("/:id/status", verifyJWT, authorize(PERMISSIONS.ISSUE_VERIFY), validate(updateIssueStatusSchema), updateStatus);
-router.delete("/:id", verifyJWT, authorize(PERMISSIONS.ISSUE_DELETE_OWN), validate(issueIdParamSchema), deleteIssue);
+router.delete("/:id", verifyJWT, authorize(PERMISSIONS.ISSUE_DELETE_OWN, PERMISSIONS.ISSUE_DELETE_ANY), validate(issueIdParamSchema), deleteIssue);
 
 export default router;

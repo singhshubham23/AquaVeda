@@ -13,11 +13,11 @@ import {
 const router = Router();
 
 router.post("/", verifyJWT, authorize(PERMISSIONS.WIKI_CREATE), validate(createWikiSchema), create);
-router.get("/", getAll);
-router.get("/mine", verifyJWT, getMine);
+router.get("/", authorize(PERMISSIONS.WIKI_READ), getAll);
+router.get("/mine", verifyJWT, authorize(PERMISSIONS.WIKI_READ), getMine);
 router.patch("/:id", verifyJWT, authorize(PERMISSIONS.WIKI_UPDATE_OWN), validate(updateWikiSchema), update);
 router.post("/:id/approve", verifyJWT, authorize(PERMISSIONS.WIKI_MODERATE), validate(wikiIdParamSchema), approve);
 router.post("/:id/reject", verifyJWT, authorize(PERMISSIONS.WIKI_MODERATE), validate(wikiIdParamSchema), reject);
-router.post("/:id/vote", verifyJWT, validate(voteWikiSchema), vote);
+router.post("/:id/vote", verifyJWT, authorize(PERMISSIONS.WIKI_READ), validate(voteWikiSchema), vote);
 
 export default router;

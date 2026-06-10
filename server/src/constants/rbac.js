@@ -11,14 +11,18 @@ export const LEGACY_ROLE_ALIASES = {
 };
 
 export const PERMISSIONS = {
+  ISSUE_READ: "issue:read",
   USER_DASHBOARD_READ: "dashboard:user:read",
   LEADERBOARD_READ: "dashboard:leaderboard:read",
   ADMIN_DASHBOARD_READ: "dashboard:admin:read",
   MODERATION_QUEUE_READ: "dashboard:moderation:read",
+  PROJECT_READ: "project:read",
   COMMUNITY_READ: "community:read",
   COMMUNITY_CONTRIBUTE: "community:contribute",
+  COMMENT_READ: "comment:read",
   MODERATION_REVIEW: "moderation:review",
   WIKI_CREATE: "wiki:create",
+  WIKI_READ: "wiki:read",
   WIKI_UPDATE_OWN: "wiki:update:own",
   WIKI_MODERATE: "wiki:moderate",
   ISSUE_CREATE: "issue:create",
@@ -33,18 +37,25 @@ export const PERMISSIONS = {
   COMMENT_DELETE_OWN: "comment:delete:own",
   COMMENT_DELETE_ANY: "comment:delete:any",
   COMMENT_FLAG: "comment:flag",
+  COMMENT_VOTE: "comment:vote",
+  COMMENT_ACCEPT: "comment:accept",
   REPORT_CREATE: "report:create",
   REPORT_REVIEW: "report:review",
   AI_CLASSIFY: "ai:classify",
   AI_DUPLICATES: "ai:duplicates",
+  AI_RECOMMEND: "ai:recommend",
 };
 
 const MEMBER_PERMISSIONS = [
+  PERMISSIONS.ISSUE_READ,
   PERMISSIONS.USER_DASHBOARD_READ,
   PERMISSIONS.LEADERBOARD_READ,
+  PERMISSIONS.PROJECT_READ,
   PERMISSIONS.COMMUNITY_READ,
   PERMISSIONS.COMMUNITY_CONTRIBUTE,
+  PERMISSIONS.COMMENT_READ,
   PERMISSIONS.WIKI_CREATE,
+  PERMISSIONS.WIKI_READ,
   PERMISSIONS.WIKI_UPDATE_OWN,
   PERMISSIONS.ISSUE_CREATE,
   PERMISSIONS.ISSUE_VERIFY,
@@ -56,9 +67,12 @@ const MEMBER_PERMISSIONS = [
   PERMISSIONS.COMMENT_UPDATE_OWN,
   PERMISSIONS.COMMENT_DELETE_OWN,
   PERMISSIONS.COMMENT_FLAG,
+  PERMISSIONS.COMMENT_VOTE,
+  PERMISSIONS.COMMENT_ACCEPT,
   PERMISSIONS.REPORT_CREATE,
   PERMISSIONS.AI_CLASSIFY,
   PERMISSIONS.AI_DUPLICATES,
+  PERMISSIONS.AI_RECOMMEND,
 ];
 
 export const ROLE_PERMISSIONS = {

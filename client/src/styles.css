@@ -22,6 +22,19 @@ body {
   min-height: 100vh;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.14), transparent 32%),
+    radial-gradient(circle at 80% 10%, rgba(52, 211, 153, 0.12), transparent 28%),
+    radial-gradient(circle at 50% 90%, rgba(14, 165, 233, 0.08), transparent 30%);
+  opacity: 0.9;
+  z-index: -1;
+}
+
 /* Remove default margins from headings so Tailwind controls spacing */
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
@@ -98,4 +111,45 @@ a {
 
 .animate-slide-in {
   animation: slide-in-right 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fade-up {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes float-soft {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-float-soft {
+  animation: float-soft 7s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 2.2s linear infinite;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
 }

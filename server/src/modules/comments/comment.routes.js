@@ -21,7 +21,7 @@ router.post(
   validate(createCommentSchema),
   create,
 );
-router.get("/", validate(listCommentQuerySchema), list);
+router.get("/", authorize(PERMISSIONS.COMMENT_READ), validate(listCommentQuerySchema), list);
 router.patch(
   "/:id",
   verifyJWT,
@@ -32,7 +32,7 @@ router.patch(
 router.delete(
   "/:id",
   verifyJWT,
-  authorize(PERMISSIONS.COMMENT_DELETE_OWN),
+  authorize(PERMISSIONS.COMMENT_DELETE_OWN, PERMISSIONS.COMMENT_DELETE_ANY),
   validate(commentIdParamSchema),
   remove,
 );
@@ -43,7 +43,7 @@ router.post(
   validate(flagCommentSchema),
   flag,
 );
-router.post("/:id/vote", verifyJWT, validate(voteCommentSchema), vote);
-router.post("/:id/accept", verifyJWT, validate(commentIdParamSchema), accept);
+router.post("/:id/vote", verifyJWT, authorize(PERMISSIONS.COMMENT_VOTE), validate(voteCommentSchema), vote);
+router.post("/:id/accept", verifyJWT, authorize(PERMISSIONS.COMMENT_ACCEPT), validate(commentIdParamSchema), accept);
 
 export default router;

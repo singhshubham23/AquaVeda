@@ -13,11 +13,10 @@ export const recommend = async (req, res, next) => {
 export const classify = async (req, res, next) => {
   try {
     const { title, description } = req.body;
-    
     if (!title || !description) {
       return error(res, "Title and description are required", 400);
     }
-    
+
     const classification = await aiService.classifyIssue(title, description);
     return success(res, classification, "Issue classified");
   } catch (err) {
@@ -28,19 +27,32 @@ export const classify = async (req, res, next) => {
 export const checkDuplicates = async (req, res, next) => {
   try {
     const { title, lng, lat } = req.body;
-    
     if (!title || lng === undefined || lat === undefined) {
       return error(res, "Title, lng, and lat are required", 400);
     }
-    
+
     const duplicates = await aiService.detectDuplicates(
-      title, 
-      Number.parseFloat(lng), 
+      title,
+      Number.parseFloat(lng),
       Number.parseFloat(lat),
-      req.tenantId
+      req.tenantId,
     );
-    
+
     return success(res, duplicates, "Duplicate check complete");
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const assist = async (req, res, next) => {
+  try {
+    const { topic = "general", prompt, tone = "detailed" } = req.body;
+    if (!prompt) {
+      return error(res, "Prompt is required", 400);
+    }
+
+    const answer = await aiService.answerAssistantQuestion(topic, prompt, tone);
+    return success(res, { topic, tone, ...answer }, "AI response generated");
   } catch (err) {
     next(err);
   }

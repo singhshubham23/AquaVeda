@@ -21,7 +21,7 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 ### Auth
 
 - JWT-based authentication
-- Roles: USER, EXPERT, ADMIN
+- Roles: MEMBER, VIEWER, ADMIN
 
 ### Wiki System
 
@@ -52,8 +52,8 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 
 ### Dashboard
 
-- Member/user activity snapshot
-- Admin-only analytics and moderation controls
+- Contributor/user activity snapshot
+- Elevated analytics and moderation controls
 - Regional insights
 
 ## Implementation Status
@@ -96,7 +96,7 @@ Aquaveda is a geo-intelligent water conservation platform combining knowledge sh
 ## Current State Summary
 
 - Core product loop is implemented: auth, wiki, issues, map visualization, AI recommendations, community discussion, projects, and dashboards.
-- Community now presents a friendlier member-facing feed for questions, contributions, and issue conversations instead of only workflow controls.
+- Community now presents a friendlier contributor-facing feed for questions, contributions, and issue conversations instead of only workflow controls.
 - New sign-ups now default to MEMBER, legacy VIEWER accounts can contribute, and ADMIN keeps the full control surface.
 - Explore is the main product workspace and is now the preferred map-first entry path.
 - Frontend performance work has removed the oversized initial bundle warning and shifted heavy analytics code off the first paint.

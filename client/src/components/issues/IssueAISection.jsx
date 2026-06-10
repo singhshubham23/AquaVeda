@@ -14,7 +14,13 @@ export default function IssueAISection({ issue }) {
       setLoading(true);
       setError("");
       const response = await getIssueRecommendations(issue._id || issue.id);
-      setData(response.data || []);
+      const payload = response.data || response || {};
+      const recommendations = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload.recommendations)
+          ? payload.recommendations
+          : [];
+      setData(recommendations);
       setHasLoaded(true);
       setOpen(true);
     } catch (err) {

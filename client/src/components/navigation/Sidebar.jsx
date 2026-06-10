@@ -41,6 +41,10 @@ export default function Sidebar() {
             <p className="text-xs text-amber-600 mt-1">Keep contributing to earn more badges and climb the leaderboard.</p>
           </div>
         )}
+        <div className="bg-teal-50 p-4 rounded-xl border border-teal-100">
+          <h4 className="text-xs font-bold text-teal-800">Leaderboard</h4>
+          <p className="text-xs text-teal-600 mt-1">Open the top contributor board from the main nav to see rankings and activity scores.</p>
+        </div>
       </div>
     );
   } else {

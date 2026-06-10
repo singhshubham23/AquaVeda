@@ -22,6 +22,7 @@ const severityColors = {
 
 function IssuePopupContent({ issue, onGetSuggestions, recommendationsByIssue, loadingIssueId }) {
   const { user } = useAuth();
+  const issueId = issue._id || issue.id;
   const isDemoIssue = Boolean(issue.isDemo);
   const [showComments, setShowComments] = useState(false);
   const [commentsLoading, setCommentsLoading] = useState(false);
@@ -38,7 +39,7 @@ function IssuePopupContent({ issue, onGetSuggestions, recommendationsByIssue, lo
     setCommentsError("");
 
     try {
-      const payload = await getComments("ISSUE", issue.id);
+      const payload = await getComments("ISSUE", issueId);
       setComments(payload.data || []);
     } catch (err) {
       setCommentsError(err.message);
@@ -74,7 +75,7 @@ function IssuePopupContent({ issue, onGetSuggestions, recommendationsByIssue, lo
       await createComment(
         {
           refType: "ISSUE",
-          refId: issue.id,
+          refId: issueId,
           content: newComment.trim()
         },
         token
@@ -102,7 +103,7 @@ function IssuePopupContent({ issue, onGetSuggestions, recommendationsByIssue, lo
       await createComment(
         {
           refType: "ISSUE",
-          refId: issue.id,
+          refId: issueId,
           content: replyText.trim(),
           parentComment: parentCommentId
         },
@@ -123,7 +124,7 @@ function IssuePopupContent({ issue, onGetSuggestions, recommendationsByIssue, lo
     }
     setVerifying(true);
     try {
-      await updateIssueStatus(issue.id, "VERIFIED");
+      await updateIssueStatus(issueId, "VERIFIED");
       setLocalStatus("VERIFIED");
     } catch (err) {
       console.error("Failed to verify:", err);
@@ -168,10 +169,10 @@ function IssuePopupContent({ issue, onGetSuggestions, recommendationsByIssue, lo
       <div style={{ display: "flex", gap: "5px", marginTop: "5px", marginBottom: "5px" }}>
         <button
           className="suggest-btn"
-          onClick={() => onGetSuggestions(issue.id)}
-          disabled={loadingIssueId === issue.id || isDemoIssue}
+          onClick={() => onGetSuggestions(issueId)}
+          disabled={loadingIssueId === issueId || isDemoIssue}
         >
-          {loadingIssueId === issue.id ? "Loading..." : isDemoIssue ? "Sample Zone" : "Get Suggestions"}
+          {loadingIssueId === issueId ? "Loading..." : isDemoIssue ? "Sample Zone" : "Get Suggestions"}
         </button>
         
         {canVerify && (
@@ -186,9 +187,9 @@ function IssuePopupContent({ issue, onGetSuggestions, recommendationsByIssue, lo
         )}
       </div>
 
-      {!isDemoIssue && Array.isArray(recommendationsByIssue[issue.id]) && (
+      {!isDemoIssue && Array.isArray(recommendationsByIssue[issueId]) && (
         <ul className="suggest-list">
-          {recommendationsByIssue[issue.id].map((item) => (
+          {recommendationsByIssue[issueId].map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>

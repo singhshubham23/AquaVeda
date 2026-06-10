@@ -68,14 +68,14 @@ AquaVeda/
 - Register and login endpoints
 - JWT-protected routes
 - MEMBER is the default signed-up role
-- MEMBER is contributor-capable, legacy VIEWER accounts are treated as members, and ADMIN unlocks admin controls
-- Seeded admin and member accounts for testing
+- MEMBER is contributor-capable, legacy VIEWER accounts are treated as members, and ADMIN unlocks elevated controls
+- Seeded admin and contributor accounts for testing
 
 ### Knowledge System
 
 - Draft article creation
 - Author-only edits while pending
-- Expert/admin approval and reject flow
+- Elevated approval and reject flow
 - Public visibility only for approved content
 
 ### Geo Issues
@@ -159,8 +159,8 @@ AquaVeda/
 
 ### Dashboard
 
-- Member/user dashboard for personal activity
-- Admin-only analytics and moderation controls
+- Contributor/user dashboard for personal activity
+- Elevated analytics and moderation controls
 - `GET /api/v1/dashboard/user`
 - `GET /api/v1/dashboard/admin`
 

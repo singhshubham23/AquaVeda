@@ -53,9 +53,14 @@ export default function IssueMapPage() {
 
     try {
       const payload = await getIssueRecommendations(issueId);
+      const data = payload.data || payload || {};
       setRecommendationsByIssue((current) => ({
         ...current,
-        [issueId]: payload.data || []
+        [issueId]: Array.isArray(data)
+          ? data
+          : Array.isArray(data.recommendations)
+            ? data.recommendations
+            : []
       }));
     } catch (err) {
       setError(err.message);

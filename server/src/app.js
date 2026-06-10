@@ -16,12 +16,14 @@ import moderationRoutes from "./modules/moderation/moderation.routes.js";
 import { notFound } from "./middlewares/notFound.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { resolveTenant } from "./middlewares/tenant.middleware.js";
+import { verifyJWT } from "./middlewares/auth.middleware.js";
 import { error, success } from "./utils/response.js";
 
 const app = express();
 
 // Render runs behind a proxy; trust first hop for correct client IP handling.
 app.set("trust proxy", 1);
+app.disable("x-powered-by");
 
 const parseAllowedOrigins = () => {
   const envOrigins = process.env.ALLOWED_ORIGINS?.split(",")
@@ -117,8 +119,9 @@ app.use(morgan("dev"));
 app.use(resolveTenant);
 
 app.use("/api/health", healthRoutes);
-app.use("/api/v1/ai", aiRoutes);
 app.use("/api/v1/auth", authLimiter, authRoutes);
+app.use(verifyJWT);
+app.use("/api/v1/ai", aiRoutes);
 app.use("/api/v1/comments", commentRoutes);
 app.use("/api/v1/dashboard", dashboardRoutes);
 app.use("/api/v1/issues", issueRoutes);

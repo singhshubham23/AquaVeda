@@ -390,14 +390,22 @@ export default function CommunityPage() {
 
   const handleStatusChange = async (issueId, newStatus, withNote = false) => {
     if (!canWork) return;
+    const currentIssue = issues.find((item) => item._id === issueId);
+    if (currentIssue?.status === newStatus) {
+      if (selectedIssue?._id === issueId) {
+        setSelectedIssue((current) => (current ? { ...current, status: newStatus } : current));
+      }
+      return;
+    }
     const noteInput = withNote ? window.prompt("Optional timeline note (max 280 chars):", "") || "" : "";
     const note = noteInput.trim().slice(0, 280);
     const prev = [...issues];
     setIssues(issues.map((i) => (i._id === issueId ? { ...i, status: newStatus } : i)));
     try {
       await updateIssueStatus(issueId, newStatus, note);
-    } catch {
+    } catch (err) {
       setIssues(prev);
+      toast.error(err?.message || "Failed to update issue status");
     }
   };
 
@@ -446,7 +454,7 @@ export default function CommunityPage() {
           <p className="text-xs uppercase tracking-[0.2em] text-cyan-100 font-semibold">Community Ops</p>
           <h1 className="mt-2 text-3xl md:text-4xl font-black tracking-tight">Community Feed & Issue Desk</h1>
           <p className="mt-2 text-cyan-50 max-w-2xl">
-            Ask questions, share contributions, and answer live issues in one calm workspace. Members can participate without needing to manage the whole workflow.
+            Ask questions, share contributions, and answer live issues in one calm workspace. Contributors can participate without needing to manage the whole workflow.
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-3">
             <div className="inline-flex rounded-xl bg-white/15 p-1 border border-white/20">
@@ -522,10 +530,10 @@ export default function CommunityPage() {
             <div className="rounded-2xl border border-cyan-100 bg-white p-5 shadow-sm">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div>
-                  <p className="text-xs uppercase tracking-wide text-cyan-700 font-bold">Member guide</p>
-                  <h2 className="mt-1 text-2xl font-black text-slate-800">What a Member can do here</h2>
+                  <p className="text-xs uppercase tracking-wide text-cyan-700 font-bold">Contributor guide</p>
+                  <h2 className="mt-1 text-2xl font-black text-slate-800">What a contributor can do here</h2>
                   <p className="mt-2 text-sm text-slate-600 max-w-2xl">
-                    Members can ask questions, answer existing posts, and help move issues forward. You do not need to manage every workflow step to contribute.
+                    Contributors can ask questions, answer existing posts, and help move issues forward. You do not need to manage every workflow step to contribute.
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-3 min-w-[250px]">
@@ -734,7 +742,7 @@ export default function CommunityPage() {
               <p className="text-xs uppercase tracking-wide text-cyan-700 font-bold">Community tip</p>
               <h4 className="mt-1 text-lg font-black text-slate-800">Best results come from one clear post</h4>
               <p className="mt-2 text-sm text-slate-600">
-                Ask one specific question, mention the region, and include enough context for another member to answer well.
+                Ask one specific question, mention the region, and include enough context for another contributor to answer well.
               </p>
             </div>
           </aside>
@@ -925,7 +933,7 @@ export default function CommunityPage() {
                   <form onSubmit={submitAnswer} className="mt-5 space-y-3">
                     {replyTo ? (
                       <div className="flex items-center justify-between rounded-xl bg-white px-3 py-2 text-xs text-slate-500">
-                        <span>Replying to {replyTo.user?.name || "a member"}</span>
+                        <span>Replying to {replyTo.user?.name || "a contributor"}</span>
                         <button
                           type="button"
                           className="font-bold text-teal-600 hover:text-teal-800"
@@ -1066,7 +1074,7 @@ export default function CommunityPage() {
                 <div className="mt-4 grid grid-cols-3 gap-2">{selectedIssue.images.map((img, idx) => <img key={idx} src={selectedIssue.imageThumbnails?.[idx] || img} alt={`Issue photo ${idx + 1}`} className="w-full h-32 object-cover rounded-xl border border-slate-200 cursor-pointer hover:opacity-80" onClick={() => window.open(img, "_blank")} />)}</div>
               ) : null}
               {isAuthenticated ? (
-                <div className="mt-6 flex items-center gap-3"><span className="text-xs font-bold text-slate-500">Move to:</span>{columns.map((c) => <button key={c.key} type="button" onClick={() => { handleStatusChange(selectedIssue._id, c.key, true); setSelectedIssue({ ...selectedIssue, status: c.key }); }} className={`text-xs font-bold px-3 py-1.5 rounded-lg ${selectedIssue.status === c.key ? "bg-teal-100 text-teal-700 ring-2 ring-teal-300" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>{c.label}</button>)}</div>
+                <div className="mt-6 flex items-center gap-3"><span className="text-xs font-bold text-slate-500">Move to:</span>{columns.map((c) => <button key={c.key} type="button" onClick={() => { handleStatusChange(selectedIssue._id, c.key, true); setSelectedIssue((current) => (current ? { ...current, status: c.key } : current)); }} className={`text-xs font-bold px-3 py-1.5 rounded-lg ${selectedIssue.status === c.key ? "bg-teal-100 text-teal-700 ring-2 ring-teal-300" : "bg-slate-100 text-slate-600 hover:bg-slate-200"}`}>{c.label}</button>)}</div>
               ) : null}
               <div className="mt-8 pt-6 border-t border-slate-100">
                 <h3 className="font-bold text-sm text-slate-800 mb-4">Discussion ({comments.length})</h3>

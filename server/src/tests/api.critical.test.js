@@ -94,7 +94,7 @@ after(async () => {
 });
 
 test(
-  "critical API flow: auth, permissions, issues, wiki, comments",
+  "critical API flow: auth, access control, issues, wiki, comments",
   { skip: !mongoUri ? "Set STAGING_MONGO_URI or TEST_MONGO_URI to run DB smoke tests" : false },
   async () => {
     const email = `member-${Date.now()}@example.test`;
@@ -102,7 +102,7 @@ test(
 
     const register = await request("/auth/register", {
       method: "POST",
-      body: { name: "Smoke Member", email, password },
+      body: { name: "Smoke Contributor", email, password },
     });
     assert.equal(register.response.status, 201);
     assert.equal(register.payload.success, true);

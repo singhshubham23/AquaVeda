@@ -10,9 +10,9 @@ import {
 
 const router = Router();
 
-router.get("/user", verifyJWT, getUserDashboard);
+router.get("/user", verifyJWT, authorize(PERMISSIONS.USER_DASHBOARD_READ), getUserDashboard);
 router.get("/admin", verifyJWT, authorize(PERMISSIONS.ADMIN_DASHBOARD_READ), getAdminDashboard);
-router.get("/leaderboard", verifyJWT, getLeaderboard);
+router.get("/leaderboard", verifyJWT, authorize(PERMISSIONS.LEADERBOARD_READ), getLeaderboard);
 router.get("/moderation", verifyJWT, authorize(PERMISSIONS.MODERATION_QUEUE_READ), getModerationQueue);
 
 export default router;

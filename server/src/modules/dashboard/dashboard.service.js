@@ -208,36 +208,87 @@ export const getAdminDashboardStats = async (tenantId) => {
 export const getLeaderboardStats = async (tenantId) => {
   const topUsers = await User.find({ tenantId })
     .sort({ reputation: -1 })
-    .limit(10)
-    .select("name email role reputation badges verified")
+    .limit(25)
+    .select("name email role reputation badges verified createdAt")
     .lean();
 
-  const counts = await Promise.all(
+  const rows = await Promise.all(
     topUsers.map(async (user) => {
       const [
         issuesReported,
+        issuesResolved,
         approvedArticles,
+        questionsAsked,
         commentsPosted,
         projectsContributed,
+        projectsCreated,
+        acceptedAnswers,
       ] = await Promise.all([
         Issue.countDocuments({ tenantId, reportedBy: user._id }),
+        Issue.countDocuments({ tenantId, reportedBy: user._id, status: { $in: ["RESOLVED", "VERIFIED"] } }),
         Wiki.countDocuments({ tenantId, author: user._id, status: "APPROVED" }),
+        Wiki.countDocuments({ tenantId, author: user._id, type: "QUESTION" }),
         Comment.countDocuments({ tenantId, user: user._id }),
         Project.countDocuments({ tenantId, contributors: user._id }),
+        Project.countDocuments({ tenantId, createdBy: user._id }),
+        Comment.countDocuments({ tenantId, user: user._id, isAccepted: true }),
       ]);
+
+      const activityScore =
+        (Number(user.reputation) || 0) +
+        issuesReported * 5 +
+        issuesResolved * 10 +
+        approvedArticles * 18 +
+        questionsAsked * 4 +
+        commentsPosted * 2 +
+        acceptedAnswers * 12 +
+        projectsCreated * 8 +
+        projectsContributed * 5;
+
       return {
         ...user,
         issuesReported,
+        issuesResolved,
         approvedArticles,
+        questionsAsked,
         commentsPosted,
         projectsContributed,
+        projectsCreated,
+        acceptedAnswers,
+        activityScore,
       };
     }),
   );
 
   return {
-    topContributors: counts,
-    totalLeaders: topUsers.length,
+    topContributors: rows.sort((left, right) => right.activityScore - left.activityScore),
+    totalLeaders: rows.length,
+    totals: rows.reduce(
+      (acc, user) => ({
+        reputation: acc.reputation + (Number(user.reputation) || 0),
+        issuesReported: acc.issuesReported + (Number(user.issuesReported) || 0),
+        issuesResolved: acc.issuesResolved + (Number(user.issuesResolved) || 0),
+        approvedArticles: acc.approvedArticles + (Number(user.approvedArticles) || 0),
+        questionsAsked: acc.questionsAsked + (Number(user.questionsAsked) || 0),
+        commentsPosted: acc.commentsPosted + (Number(user.commentsPosted) || 0),
+        projectsContributed: acc.projectsContributed + (Number(user.projectsContributed) || 0),
+        projectsCreated: acc.projectsCreated + (Number(user.projectsCreated) || 0),
+        acceptedAnswers: acc.acceptedAnswers + (Number(user.acceptedAnswers) || 0),
+        activityScore: acc.activityScore + (Number(user.activityScore) || 0),
+      }),
+      {
+        reputation: 0,
+        issuesReported: 0,
+        issuesResolved: 0,
+        approvedArticles: 0,
+        questionsAsked: 0,
+        commentsPosted: 0,
+        projectsContributed: 0,
+        projectsCreated: 0,
+        acceptedAnswers: 0,
+        activityScore: 0,
+      },
+    ),
   };
 };
 

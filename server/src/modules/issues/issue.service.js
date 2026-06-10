@@ -203,6 +203,22 @@ export const updateIssueStatus = async (id, newStatus, note, user, tenantId) => 
     throw new NotFoundError("Issue");
   }
 
+  if (issue.status === newStatus) {
+    if (note?.trim()) {
+      issue.timeline.push({
+        action: "UPDATED",
+        by: user.id,
+        note: note.trim().slice(0, 280),
+      });
+      await issue.save();
+    }
+
+    return Issue.findOne({ _id: id, tenantId })
+      .populate("reportedBy", "name")
+      .populate("timeline.by", "name")
+      .lean();
+  }
+
   // Only admins/experts can verify
   if (newStatus === "VERIFIED" && ![ROLES.ADMIN, ROLES.MEMBER].includes(user.role)) {
      throw new ForbiddenError("Only admins and members can verify issues");

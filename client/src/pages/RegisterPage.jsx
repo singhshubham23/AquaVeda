@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import toast from "react-hot-toast";
+import logo from "../assets/06cfca35-7eaf-4671-8d24-49efb87d1e71.jpg";
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -27,17 +28,19 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex animate-fade-up">
       {/* Left Branding Panel */}
-      <div className="hidden lg:flex flex-col justify-between w-1/2 bg-gradient-to-br from-emerald-900 via-teal-800 to-teal-700 p-12 relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-between w-1/2 bg-gradient-to-br from-emerald-950 via-teal-900 to-teal-800 p-12 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 right-20 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-20 left-20 w-48 h-48 bg-teal-200 rounded-full blur-3xl" />
+          <div className="absolute top-20 right-20 w-72 h-72 bg-white rounded-full blur-3xl animate-float-soft" />
+          <div className="absolute bottom-20 left-20 w-48 h-48 bg-teal-200 rounded-full blur-3xl animate-float-soft" />
         </div>
 
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-white font-extrabold text-xl">A</div>
+            <div className="w-10 h-10 rounded-xl overflow-hidden bg-white/90 backdrop-blur-sm ring-1 ring-white/30 animate-float-soft">
+              <img src={logo} alt="AquaVeda" className="w-full h-full object-cover" />
+            </div>
             <span className="text-white font-extrabold text-xl tracking-tight">AquaVeda</span>
           </div>
           <p className="text-teal-200 text-sm font-medium">Water Intelligence Platform</p>
@@ -68,11 +71,13 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Form Panel */}
-      <div className="flex-1 flex items-center justify-center p-8 bg-gradient-to-br from-slate-50 to-white">
-        <div className="w-full max-w-md">
+      <div className="flex-1 flex items-center justify-center p-6 md:p-8 bg-gradient-to-br from-slate-50 via-white to-emerald-50">
+        <div className="w-full max-w-md glass-card rounded-3xl p-6 md:p-8 animate-fade-up">
           {/* Mobile Logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center text-white font-extrabold">A</div>
+            <div className="w-8 h-8 rounded-lg overflow-hidden bg-white ring-1 ring-slate-200 animate-float-soft">
+              <img src={logo} alt="AquaVeda" className="w-full h-full object-cover" />
+            </div>
             <span className="font-extrabold text-slate-800">AquaVeda</span>
           </div>
 
@@ -90,7 +95,7 @@ export default function RegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 required
                 autoComplete="name"
-                className="px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-teal-500 outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400"
+                className="px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-teal-500 outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400 shadow-sm bg-white/90"
                 placeholder="John Doe"
               />
             </label>
@@ -103,7 +108,7 @@ export default function RegisterPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                className="px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-teal-500 outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400"
+                className="px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-teal-500 outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400 shadow-sm bg-white/90"
                 placeholder="you@company.com"
               />
             </label>
@@ -118,7 +123,7 @@ export default function RegisterPage() {
                   minLength={6}
                   required
                   autoComplete="new-password"
-                  className="w-full px-4 py-3 pr-12 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-teal-500 outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400"
+                  className="w-full px-4 py-3 pr-12 border-2 border-slate-200 rounded-xl focus:ring-0 focus:border-teal-500 outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400 shadow-sm bg-white/90"
                   placeholder="Min. 6 characters"
                 />
                 <button
@@ -136,7 +141,7 @@ export default function RegisterPage() {
               type="submit"
               disabled={loading}
               id="register-submit-btn"
-              className="mt-1 w-full py-3.5 px-4 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-60 text-sm tracking-wide"
+              className="mt-1 w-full py-3.5 px-4 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-60 text-sm tracking-wide hover:scale-[1.01]"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">

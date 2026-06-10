@@ -12,7 +12,7 @@ import {
 const router = Router();
 
 router.post("/", verifyJWT, authorize(PERMISSIONS.PROJECT_CREATE), validate(createProjectSchema), create);
-router.get("/", validate(projectListQuerySchema), getAll);
+router.get("/", authorize(PERMISSIONS.PROJECT_READ), validate(projectListQuerySchema), getAll);
 router.post("/:id/join", verifyJWT, authorize(PERMISSIONS.PROJECT_JOIN), join);
 router.patch("/:id/progress", verifyJWT, authorize(PERMISSIONS.PROJECT_UPDATE_PROGRESS_OWN), validate(updateProgressSchema), setProgress);
 

@@ -54,6 +54,24 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+function PublicOnlyRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/explore" replace />;
+  }
+
+  return children;
+}
+
 function PermissionRoute({ children, anyOf = [] }) {
   const { user, loading, isAuthenticated } = useAuth();
   const location = useLocation();
@@ -85,15 +103,34 @@ function PermissionRoute({ children, anyOf = [] }) {
 
 function AppContent() {
   const [aiOpen, setAiOpen] = useState(false);
+  const appShell = (
+    <ProtectedRoute>
+      <MainLayout />
+    </ProtectedRoute>
+  );
 
   return (
     <>
       <ErrorBoundary>
         <Suspense fallback={<RouteFallback />}>
           <Routes>
-            <Route path="/" element={<Navigate to="/explore" replace />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route
+              path="/login"
+              element={
+                <PublicOnlyRoute>
+                  <LoginPage />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicOnlyRoute>
+                  <RegisterPage />
+                </PublicOnlyRoute>
+              }
+            />
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
             <Route
               path="/health"
@@ -104,18 +141,16 @@ function AppContent() {
               }
             />
 
-            <Route path="/" element={<MainLayout />}>
+            <Route path="/" element={appShell}>
               <Route path="explore" element={<ExplorePage />} />
               <Route path="map" element={<IssueMapPage />} />
               <Route path="act" element={<ActPage />} />
               <Route
                 path="activity"
                 element={
-                  <ProtectedRoute>
-                    <PermissionRoute anyOf={[PERMISSIONS.USER_DASHBOARD_READ]}>
-                      <MyActivityPage />
-                    </PermissionRoute>
-                  </ProtectedRoute>
+                  <PermissionRoute anyOf={[PERMISSIONS.USER_DASHBOARD_READ]}>
+                    <MyActivityPage />
+                  </PermissionRoute>
                 }
               />
               <Route path="projects" element={<ProjectsPage />} />
@@ -123,44 +158,31 @@ function AppContent() {
               <Route
                 path="community"
                 element={
-                  <ProtectedRoute>
-                    <PermissionRoute anyOf={[PERMISSIONS.COMMUNITY_READ]}>
-                      <CommunityPage />
-                    </PermissionRoute>
-                  </ProtectedRoute>
+                  <PermissionRoute anyOf={[PERMISSIONS.COMMUNITY_READ]}>
+                    <CommunityPage />
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="leaderboard"
                 element={
-                  <ProtectedRoute>
-                    <PermissionRoute anyOf={[PERMISSIONS.LEADERBOARD_READ]}>
-                      <LeaderboardPage />
-                    </PermissionRoute>
-                  </ProtectedRoute>
+                  <PermissionRoute anyOf={[PERMISSIONS.LEADERBOARD_READ]}>
+                    <LeaderboardPage />
+                  </PermissionRoute>
                 }
               />
               <Route
                 path="dashboard"
                 element={
-                  <ProtectedRoute>
-                    <PermissionRoute anyOf={[PERMISSIONS.USER_DASHBOARD_READ]}>
-                      <DashboardPage />
-                    </PermissionRoute>
-                  </ProtectedRoute>
+                  <PermissionRoute anyOf={[PERMISSIONS.USER_DASHBOARD_READ]}>
+                    <DashboardPage />
+                  </PermissionRoute>
                 }
               />
-              <Route
-                path="profile"
-                element={
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="profile" element={<ProfilePage />} />
             </Route>
 
-            <Route path="*" element={<Navigate to="/explore" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Suspense>
       </ErrorBoundary>

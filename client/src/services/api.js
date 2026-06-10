@@ -190,6 +190,11 @@ export const checkDuplicates = async (payload) => {
   return data;
 };
 
+export const askAiAssistant = async (payload) => {
+  const { data } = await api.post("/v1/ai/assist", payload);
+  return data;
+};
+
 // ── Q&A / Voting ──
 export const voteWiki = async (id, type) => {
   const { data } = await api.post(`/v1/wiki/${id}/vote`, { type });

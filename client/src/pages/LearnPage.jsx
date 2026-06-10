@@ -34,7 +34,7 @@ const learnTracks = [
   {
     id: "home",
     title: "Home Saving",
-    icon: "??",
+    icon: "HS",
     accent: "from-cyan-500 to-teal-500",
     quickWin: "Fixing one dripping tap can save around 15-20 liters/day.",
     tips: [
@@ -47,7 +47,7 @@ const learnTracks = [
   {
     id: "garden",
     title: "Garden & Outdoor",
-    icon: "??",
+    icon: "GO",
     accent: "from-emerald-500 to-lime-500",
     quickWin: "Drip irrigation can reduce outdoor water use by 30-50%.",
     tips: [
@@ -60,7 +60,7 @@ const learnTracks = [
   {
     id: "community",
     title: "Community Impact",
-    icon: "??",
+    icon: "CI",
     accent: "from-blue-500 to-indigo-500",
     quickWin: "A colony-level leak audit can cut losses by 10-25%.",
     tips: [
@@ -73,7 +73,7 @@ const learnTracks = [
   {
     id: "reuse",
     title: "Reuse & Recycling",
-    icon: "??",
+    icon: "RR",
     accent: "from-sky-500 to-cyan-500",
     quickWin: "Greywater reuse can cut fresh water demand by 20-40%.",
     tips: [
@@ -162,9 +162,9 @@ function WikiComments({ wiki, currentUser, canComment, isAuthenticated }) {
           <div key={c._id} className={`p-4 rounded-xl border ${c.isAccepted ? "border-green-400 bg-green-50 shadow-sm" : "border-slate-100 bg-slate-50"}`}>
             <div className="flex gap-4">
               <div className="flex flex-col items-center gap-1 shrink-0">
-                <button onClick={() => handleVote(c._id, "UP")} className="text-slate-400 hover:text-teal-600 transition-colors">?</button>
+                <button onClick={() => handleVote(c._id, "UP")} className="text-slate-400 hover:text-teal-600 transition-colors">^</button>
                 <span className="font-bold text-slate-600 text-sm">{(c.upvotedBy?.length || 0) - (c.downvotedBy?.length || 0)}</span>
-                <button onClick={() => handleVote(c._id, "DOWN")} className="text-slate-400 hover:text-red-600 transition-colors">?</button>
+                <button onClick={() => handleVote(c._id, "DOWN")} className="text-slate-400 hover:text-red-600 transition-colors">v</button>
               </div>
 
               <div className="flex-1 min-w-0">
@@ -206,7 +206,7 @@ function WikiComments({ wiki, currentUser, canComment, isAuthenticated }) {
         </div>
       ) : (
         <p className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-500">
-          Sign in with a member account to join this discussion.
+          Sign in with an account to join this discussion.
         </p>
       )}
     </div>
@@ -515,14 +515,14 @@ export default function LearnPage() {
             <article key={article._id} className="bg-white border border-slate-200/60 rounded-2xl shadow-sm hover:shadow-md transition-all overflow-hidden">
               <div className="flex items-center w-full p-4 hover:bg-slate-50/50 cursor-pointer" onClick={() => setExpanded(expanded === article._id ? null : article._id)}>
                 <div className="flex flex-col items-center shrink-0 w-12 mr-2">
-                  <button onClick={(e) => handleWikiVote(e, article._id, "UP")} className="text-slate-400 hover:text-teal-600">?</button>
+                  <button onClick={(e) => handleWikiVote(e, article._id, "UP")} className="text-slate-400 hover:text-teal-600">^</button>
                   <span className="font-bold text-slate-600 text-sm">{(article.upvotedBy?.length || 0) - (article.downvotedBy?.length || 0)}</span>
-                  <button onClick={(e) => handleWikiVote(e, article._id, "DOWN")} className="text-slate-400 hover:text-red-600">?</button>
+                  <button onClick={(e) => handleWikiVote(e, article._id, "DOWN")} className="text-slate-400 hover:text-red-600">v</button>
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-1">
-                    <span className="text-xl">{article.type === "QUESTION" ? "?" : "??"}</span>
+                    <span className="text-xl">{article.type === "QUESTION" ? "Q" : "A"}</span>
                     <h3 className="text-base font-bold text-slate-800 truncate">{article.title}</h3>
                     <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${statusBadge[article.status?.toUpperCase()] || "bg-slate-100 text-slate-600"}`}>
                       {article.status}
@@ -532,7 +532,7 @@ export default function LearnPage() {
                     By <span className="font-semibold">{article.author?.name || "Anonymous"}</span> · {new Date(article.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <span className="text-slate-400 text-lg ml-3 shrink-0">{expanded === article._id ? "?" : "?"}</span>
+                <span className="text-slate-400 text-lg ml-3 shrink-0">{expanded === article._id ? "v" : ">"}</span>
               </div>
 
               {expanded === article._id && (
